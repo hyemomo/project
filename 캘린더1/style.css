@@ -15,7 +15,7 @@ background-color: rgb(56, 51, 95);
 }
 .calendar{
 
-width: 700px;
+width: 800px;
 height: auto;
 background-color: rgb(255, 255, 255);
 text-align: center;
@@ -72,4 +72,13 @@ flex-wrap: wrap;
     height:20px ;
     text-align: center;
     padding: 15px;
+}
+
+.day:nth-child(7n+1),
+.date:nth-child(7n+1){
+    color:brown
+}
+.day:nth-child(7n),
+.date:nth-child(7n){
+    color:rgb(58, 17, 242)
 }

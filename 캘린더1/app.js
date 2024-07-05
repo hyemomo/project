@@ -1,7 +1,7 @@
-const date = new Date();
 
 
 
+let date = new Date();
 
 const renderCalendar=()=>{ // 달력 보여주기
 
@@ -59,10 +59,21 @@ document.querySelector(".dates").innerHTML = dates.join("");
 
 }
 
-
 renderCalendar();
 
-const go_prev = document.querySelector(".go-prev");
-const go_next = document.querySelector(".go-next");
+const prevMonth=()=>{
+  date.setDate(1)
+  date.setMonth(date.getMonth()-1)
+  renderCalendar()
+}
 
+const nextMonth=()=>{
+  date.setDate(1)
+  date.setMonth(date.getMonth()+1)
+  renderCalendar()
+}
 
+const thisMonth=()=>{
+date=new Date();
+renderCalendar()
+}
