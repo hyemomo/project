@@ -1,0 +1,70 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+ul{
+  list-style: none;
+  padding:0px;
+}
+
+.main{
+    display: block;
+    width: 100%;
+}
+.content-wrap{
+    width: 90%;
+    margin: 0 auto  ;
+   background-color: #ababab;
+   border-radius: 20px;
+   overflow: hidden;
+   display: flex;
+}
+.content-left{
+    background: #d7d7d7;
+    color:#59a5ff;
+    float: left;
+    width:50%;
+    
+    padding: 30px;
+  }
+  .main-wrap{
+display: flex;
+flex-direction: column;
+text-align: center;
+
+
+  }
+
+  .main-day{
+    font-size: 30px;
+  }
+  .main-date{
+font-size: 90px;;
+font-weight: bold;
+  }
+  .todo-wrap{
+    width:100%;
+    text-align: center;
+  }
+  .todo-title{
+float: left;
+  }
+  .input-wrap{
+    
+  }
+  .content-right{
+  
+
+    width:50%;
+    
+    padding: 30px;
+  }
+  .calendar{
+    width:50%;
+   
+  }
+  .date{
+    width:calc(100%/7);
+    height: 20px;
+    display: inline-block;
+  }

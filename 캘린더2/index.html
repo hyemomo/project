@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script defer src="app.js"> </script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="main">
+        <div class="content-wrap">
+            <div class="content-left">
+                <div class="main-wrap">
+                    <span class="main-day">monday</span>
+                    <span class="main-date">24</span>
+                </div>
+                <div class="todo-wrap">
+                    <span class="todo-title">오늘의 할 일</span>
+                    <div class="input-wrap">
+                        <input type="text">
+                        <button></button>
+                        <ul><li>과자사오기</li></ul>
+                    </div>
+                </div>
+            </div>
+            <div class="content-right">
+                <div class="nav">
+                    <button class="nav-btn go-prev" onclick="prevMonth()">&lt;</button>
+                  <span class="year-month">2002년 09월 03일</span>
+                    <button class="nav-btn go-next" onclick="nextMonth()">&gt;</button>
+                  </div>         
+          
+                <div class="calendar"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
