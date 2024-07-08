@@ -20,26 +20,88 @@ const monthList = [
   "Oct.",
   "Nov.",
   "Dec.",
-];
+]; 
+
+
 let calendar = document.querySelector(".calendar");
 const input = document.querySelector("input")
 const todoButton = document.querySelector("button")
 const todoList = document.querySelector("ul")
 
-todoButton.addEventListener("click", () => { 
-  console.log(input.value)
-  if (input.value !== '') { 
-    let li = document.createElement('li')
+
+let currentDate = new Date();
+renderCalendar(currentDate);
+showMain(currentDate);
+initializeLocalStorage();
+
+
+todoButton.addEventListener("click", addTodo)
+calendar.addEventListener("click", dateClick)
+
+
+function initializeLocalStorage() {
+  const storedTodos = JSON.parse(localStorage.getItem('todos')) || {};
+  const key = getFormattedDate(currentDate);
+  if (storedTodos[key]) {
+    storedTodos[key].forEach(todo => {
+      addTodoToDOM(todo);
+    });
+  }
+}
+function dateClick(e) { 
+  if (e.target.className === 'date' && e.target.textContent.trim() !== "") {
+
+    const selectedDate = parseInt(e.target.textContent);
+    currentDate.setDate(selectedDate);
+    showMain(currentDate)
+    initializeLocalStorage()
+    // ////////////////////////////////addTodoToDOM(localStorage.todos[currentDate])
+    showCircle(e);
+  }
+}
+
+function addTodoToDOM(todoText) {
+  let li = document.createElement('li')
   li.textContent=input.value
   li.classList.add('todo')
-  todoList.append(li)
+    todoList.append(li)
+ }
+function getFormattedDate(date) { //YYYY-MM-DD 되도록 만듬
+  const year = date.getFullYear(); //2024
+  const month = String(date.getMonth() + 1).padStart(2, '0'); //09 04 10 12 이렇게 됨
+  const day = String(date.getDate()).padStart(2, '0'); //23 ,31...
+   return `${year}-${month}-${day}`;
+  
+}
+
+
+function addTodo() { 
+  const todoText = input.value.trim();
+
+
+  if (todoText !== '') { 
+    const key = getFormattedDate(currentDate);
+    const storedTodos = JSON.parse(localStorage.getItem('todos')) || {}; //todos라는 key를 읽기
+    if (!storedTodos[key]) { 
+      storedTodos[key]=[]
+    }
+    storedTodos[key].push(todoText);
+    localStorage.setItem('todos', JSON.stringify(storedTodos))
+    addTodoToDOM(todoText)
+
   }
-  input.value=''
-})
+  input.value = ''
+  //ㅌ투두 아이템을 화면에 추가하는 함수
+  console.dir(localStorage.todos)
+}
+myStorage = window.localStorage;
+
+localStorage.setItem("hyemin", "tom")
+console.log(myStorage)
 
 
 
-const renderCalendar = () => {
+function renderCalendar (date) {
   // 달력 보여주기
 
   const year = date.getFullYear();
@@ -79,14 +141,14 @@ const renderCalendar = () => {
   calendar.setAttribute("id", `${year}${month}`);
   calendar.innerHTML = dates.join("");
 };
-const showMain = () => {
+function showMain(date)  {
   const todayDay = date.getDay();
   const todayDate = date.getDate();
 
   document.querySelector(".main-day").textContent = dayList[todayDay];
   document.querySelector(".main-date").textContent = todayDate;
 };
-const showCircle = (e) => {
+function showCircle(e){
   if (e.target.className === "date") {
     let dates = document.querySelectorAll(".date");
 
@@ -96,25 +158,18 @@ const showCircle = (e) => {
     e.target.classList.add("active");
   }
   const selectedDate = parseInt(e.target.textContent); // 선택된 날짜
-  date.setDate(selectedDate);
-  showMain();
+  currentDate.setDate(selectedDate);
+  showMain(currentDate);initializeLocalStorage()
 };
 
-const prevMonth = () => {
+function prevMonth  () {
   date.setDate(1);
   date.setMonth(date.getMonth() - 1);
   renderCalendar();
 };
-const nextMonth = () => {
+function nextMonth  () {
   date.setDate(1);
   date.setMonth(date.getMonth() + 1);
   renderCalendar();
 };
 
-let date = new Date();
-renderCalendar();
-showMain();
-
-calendar.addEventListener("click", (e) => {
-  if (e.target.className === 'date' && e.target.textContent !== " ") showCircle(e);
-});
