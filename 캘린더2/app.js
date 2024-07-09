@@ -34,6 +34,7 @@ localStorage.clear();
 renderCalendar(currentDate);
 showMain(currentDate);
 initializeLocalStorage();
+
 todayCircle();
 
 todoButton.addEventListener("click", addTodo);
@@ -96,11 +97,14 @@ function dateClick(e) {
     showCircle(e);
   }
 }
+//내일하기 ! 날짜랑 제목을 다른 태그에 넣고 싶음
 function addTodoToMain(todo) {
-  let li = document.createElement("li");
-  let xmarkIcon = document.createElement("i");
-  let span = document.createElement("span");
-  span.textContent = todo.todoTime + " " + todo.todoText;
+  let li = document.createElement("li"); 
+  let xmarkIcon = document.createElement("i"); 
+  let timeSpan = document.createElement("span"); 
+  let textSpan = document.createElement("span"); 
+ timeSpan.textContent = todo.todoTime;
+ textSpan.textContent = todo.todoText;
   span.classList.add("todo");
   xmarkIcon.classList.add("fa-solid", "fa-xmark");
   li.append(span);
@@ -117,10 +121,13 @@ function getFormattedDate(date) {
 function addTodo() {
   const todoText = inputText.value.trim();
   const todoTime = inputTime.value;
-  if (todoText == "") {
-    alert("할일을 적어주세요");
-  } else {
-    //시간을 어떤 식으로 넣어야하는 지 모르겠다.
+  console.log(todoTime)
+  if (todoText === "" || todoTime === "") {
+    if (todoText === "") alert("할 일을 적어주세요");
+    if (todoTime === "") alert("시간을 알려주세요")
+    
+  }else {
+   
     const key = getFormattedDate(currentDate);
     const storedTodos = JSON.parse(localStorage.getItem("todos")) || {}; //todos라는 key를 읽기
     if (!storedTodos[key]) {
@@ -168,6 +175,7 @@ function renderCalendar() {
 function showMain(date) {
   const todayDay = date.getDay();
   const todayDate = date.getDate();
+  document.querySelector(".main-date").style.color = "black";
 
   document.querySelector(".main-day").textContent = dayList[todayDay];
   document.querySelector(".main-date").textContent = todayDate;
