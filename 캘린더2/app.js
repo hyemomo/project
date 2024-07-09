@@ -4,13 +4,14 @@ let date = new Date();
 const renderCalendar=()=>{ // 달력 보여주기
 
 
-
+const monthList=['Jan.','Feb.', 'Mar.', 'Apr.', 'May.','Jun.','Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.']
 
 const year = date.getFullYear();
 const month = date.getMonth();
 console.log(date.getDay());
 
-document.querySelector(".year-month").textContent = `${year}년 ${month + 1}월 `;
+
+document.querySelector(".year-month").textContent = `${monthList[month]} ${year}`;
 //month는 0부터!!0이 1월부터!
 
 const prevLast = new Date(year, month, 0); //지난 달의 마지막 날!
@@ -75,4 +76,22 @@ const prevMonth=()=>{
   date=new Date();
   renderCalendar()
   }
+
+  const showClickedDate=()=>{
+
+
+
+  }
+
+
+
+document.querySelector(".calendar").addEventListener("click",(e)=>{
+
+console.dir(
+  e
+);  if(e.target.className=="date"){
   
+}
+
+
+})
