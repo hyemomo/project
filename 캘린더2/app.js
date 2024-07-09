@@ -23,7 +23,9 @@ const monthList = [
 ];
 
 let calendar = document.querySelector(".calendar");
-const input = document.querySelector("input");
+const inputTime = document.querySelector(".input-time");
+
+const inputText = document.querySelector(".input-text");
 const todoButton = document.querySelector("button");
 const todoList = document.querySelector("ul");
 
@@ -32,27 +34,50 @@ localStorage.clear();
 renderCalendar(currentDate);
 showMain(currentDate);
 initializeLocalStorage();
-console.log(calendar);
-todayCircle()
+todayCircle();
+
 todoButton.addEventListener("click", addTodo);
 calendar.addEventListener("click", dateClick);
+todoList.addEventListener("click", xmarkClick);
+
+/*x 클릭 시 로컬스토리지에서 지우는 함수 만들어야함 */
+//근데 로컬스토리지에서만 지운 다음에 다시 initialLocalStorage()하면 되는 거 아닐까
+function xmarkClick(e) {
+  if (e.target.matches("i.fa-solid.fa-xmark")) {
+    const li = e.target.parentNode;
+  
+    const todo = li.querySelector("span.todo").textContent.trim();
+    let [todoTime, todoText] = todo.split(" ")
+    console.log(todoText)
+    //해야할 것! 로컬스토리지에서 지우기
+
+    const key = getFormattedDate(currentDate);
+    let storedTodos = JSON.parse(localStorage.getItem("todos")) || {};
+    if (storedTodos[key]) { 
+console.dir(storedTodos[key])
+      storedTodos[key]= storedTodos[key].filter(todo=>todo.todoText !==todoText)
+console.dir(storedTodos[key])
+   
+      localStorage.setItem("todos", JSON.stringify(storedTodos))
+initializeLocalStorage()  } }
 
 
+    
+}
+
+//
 function todayCircle() {
-  console.log(calendar);
-  console.log(currentDate.getDate());
-  console.log(calendar.childNodes);
   let id = currentDate.getDate();
   let todayElement = document.querySelector(`#date${id}`);
   if (todayElement) {
     todayElement.classList.add("active");
   }
 }
-
 function initializeLocalStorage() {
   const storedTodos = JSON.parse(localStorage.getItem("todos")) || {};
   const key = getFormattedDate(currentDate);
   todoList.innerHTML = "";
+
   console.log(storedTodos[key]);
   if (storedTodos[key]) {
     storedTodos[key].forEach((todo) => {
@@ -61,79 +86,66 @@ function initializeLocalStorage() {
   }
 }
 function dateClick(e) {
-  //날짜 선택했을 때
   if (e.target.className === "date" && e.target.textContent.trim() !== "") {
-    const selectedDate = parseInt(e.target.textContent); //15일을 선택 했으면
-
+    const selectedDate = parseInt(e.target.textContent);
     if (selectedDate !== currentDate) {
-      //현재 날짜랑 다른 날짜를 선택했으면
-
-      currentDate.setDate(selectedDate); // 선택한 날짜로 바꿈
-      showMain(currentDate); //Main 바꿈
+      currentDate.setDate(selectedDate);
+      showMain(currentDate);
       initializeLocalStorage();
     }
-
-    showCircle(e); //캘린더에 동그라미
+    showCircle(e);
   }
 }
-
-function addTodoToMain(todoText) {
-  //  Main에 투두리스트 적음
-
-  console.dir(todoList);
+function addTodoToMain(todo) {
   let li = document.createElement("li");
-  li.textContent = todoText;
-  li.classList.add("todo");
-  todoList.append(li); //<li class="todo"> 우산 사기 </li>
+  let xmarkIcon = document.createElement("i");
+  let span = document.createElement("span");
+  span.textContent = todo.todoTime + " " + todo.todoText;
+  span.classList.add("todo");
+  xmarkIcon.classList.add("fa-solid", "fa-xmark");
+  li.append(span);
+  li.append(xmarkIcon);
+  todoList.append(li);
 }
 function getFormattedDate(date) {
   //YYYY-MM-DD 되도록 만듬
-  const year = date.getFullYear(); //2024
-  const month = String(date.getMonth() + 1).padStart(2, "0"); //09 04 10 12 이렇게 됨
-  const day = String(date.getDate()).padStart(2, "0"); //23 ,31...
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 }
-
 function addTodo() {
-  const todoText = input.value.trim();
-
-  if (todoText !== "") {
+  const todoText = inputText.value.trim();
+  const todoTime = inputTime.value;
+  if (todoText == "") {
+    alert("할일을 적어주세요");
+  } else {
+    //시간을 어떤 식으로 넣어야하는 지 모르겠다.
     const key = getFormattedDate(currentDate);
     const storedTodos = JSON.parse(localStorage.getItem("todos")) || {}; //todos라는 key를 읽기
     if (!storedTodos[key]) {
       storedTodos[key] = [];
     }
-    storedTodos[key].push(todoText);
+    console.log(todoTime);
+    console.log(storedTodos);
+    storedTodos[key].push({ todoTime: todoTime, todoText: todoText });
     localStorage.setItem("todos", JSON.stringify(storedTodos));
-    addTodoToMain(todoText);
+    initializeLocalStorage();
   }
-  input.value = "";
-  //ㅌ투두 아이템을 화면에 추가하는 함수
-  console.dir(localStorage.todos);
+  inputText.value = "";
 }
-myStorage = window.localStorage;
-
-localStorage.setItem("hyemin", "tom");
-console.log(myStorage);
-
-function renderCalendar(date) {
-  // 달력 보여주기
-
+function renderCalendar() {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
+  document.querySelector(".year-month").textContent =
+    monthList[month] + " " + year;
 
-  document.querySelector(
-    ".year-month"
-  ).textContent = ` ${monthList[month]} ${year} `;
-  //month는 0부터!!0이 1월부터!
-
-  const prevLast = new Date(year, month, 0); //지난 달의 마지막 날 date객체
-  const thisLast = new Date(year, month + 1, 0); //이번 달의 마지막 날 date객체
-
-  const prevLast_Date = prevLast.getDate(); //지난 달의 마지막 날의 날짜   (31)
-  const prevLast_Day = prevLast.getDay(); //지난 달의 마지막 날의 요일    (일요일 0번)
-  const thisLast_Date = thisLast.getDate(); //이번 달의 마지막 날의 날짜    (31)
-  const thisLast_Day = thisLast.getDay(); //이번 달의 마지막 요일     (수요일 3번)
+  const prevLast = new Date(year, month, 0);
+  const thisLast = new Date(year, month + 1, 0);
+  const prevLast_Date = prevLast.getDate();
+  const prevLast_Day = prevLast.getDay();
+  const thisLast_Date = thisLast.getDate();
+  const thisLast_Day = thisLast.getDay();
 
   let dates = [];
   if (prevLast_Day !== 6) {
@@ -144,19 +156,15 @@ function renderCalendar(date) {
   for (let i = 1; i < thisLast_Date + 1; i++) {
     dates.push(i);
   }
-
   for (let i = 1; i < 7 - thisLast_Day; i++) {
-  
     dates.push(" ");
   }
-  console.log(dates);
   dates.forEach((date, index) => {
-    dates[index] = `<div class="date" id=date${index}>${date}</div>`;
+    dates[index] = "<div class='date' id=date" + index + ">" + date + "</div>";
   });
-  calendar.setAttribute("id", `${year}${month}`);
+  calendar.setAttribute("id", year + "" + month);
   calendar.innerHTML = dates.join("");
 }
-
 function showMain(date) {
   const todayDay = date.getDay();
   const todayDate = date.getDate();
@@ -178,7 +186,6 @@ function showCircle(e) {
   showMain(currentDate);
   initializeLocalStorage();
 }
-
 function prevMonth() {
   currentDate.setDate(1);
   currentDate.setMonth(currentDate.getMonth() - 1);

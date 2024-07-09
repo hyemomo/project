@@ -11,9 +11,11 @@ button{
 }
 
 
+
 .main {
   display: block;
   width: 100%;
+
 }
 .content-wrap {
   width: 700px;
@@ -27,7 +29,7 @@ button{
   background: #d7d7d7;
   color: #59a5ff;
   float: left;
-  width: 50%;
+  width: 65%;
 
   padding-top: 60px;
 }
@@ -77,8 +79,31 @@ button{
   height: 200px;
   font-weight: bold;
 }
+.todo-list{
+  position: relative;
+  text-align: left;
+  padding-left: 20px;
+  line-height: 25px;
+  color: black;
+}
+
+
+.todo-list li .fa-xmark{
+  position: absolute;
+  right: 50px;
+  color: #d76a6a;
+  font-size: 20px;
+}
+.todo-list li .fa-check{
+  position: absolute;
+  right: 20px;
+  color: #2b9c4f;
+  font-size: 20px;
+
+
+}
 .content-right {
-  width: 50%;
+  width: 35%;
   font-weight: bold;
   padding: 30px;
 }
@@ -89,7 +114,6 @@ button{
   justify-content: space-around;
   padding-top: 30px;
   padding-bottom: 50px;
-  
 }
 .year-month{
 font-size: 20px;
@@ -105,6 +129,7 @@ font-size: 30px;
   display: flex;
   flex-wrap: wrap;
 }
+
 .days {
   width: 100%;
   display: flex;
@@ -116,9 +141,9 @@ font-size: 30px;
   height: 50px;
 }
 .date {
-  line-height: 50px;
+  line-height: 30px;
   width: calc(100% / 7);
-  height: 50px;
+  height: 30px;
 }
 
 
