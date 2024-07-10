@@ -8,7 +8,7 @@ ul {
   padding: 0px;
 }
 button{
-  border: none;
+  border: none;cursor: pointer;
 }
 input{
   height: 30px;
@@ -60,11 +60,12 @@ input{
 }
 /*input*/
 .input-wrap button {
-  width: 30px;
-  height: 20px;
+  width: 20px;
+  height: 30px;
   color: #4f96ec;
   border-radius: 20px;
-  font-size: 20px;
+  font-size: 25px;
+  
 }
 .input-wrap ul {
   padding-top: 20px;

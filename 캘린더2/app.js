@@ -27,7 +27,6 @@ const inputText = document.querySelector(".input-text");
 const todoButton = document.querySelector("button");
 const todoList = document.querySelector("ul");
 let currentDate = new Date();
-localStorage.clear();
 renderCalendar(currentDate);
 showMain(currentDate);
 initializeLocalStorage();
