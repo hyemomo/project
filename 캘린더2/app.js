@@ -21,52 +21,40 @@ const monthList = [
   "Nov.",
   "Dec.",
 ];
-
 let calendar = document.querySelector(".calendar");
 const inputTime = document.querySelector(".input-time");
-
 const inputText = document.querySelector(".input-text");
 const todoButton = document.querySelector("button");
 const todoList = document.querySelector("ul");
-
 let currentDate = new Date();
 localStorage.clear();
 renderCalendar(currentDate);
 showMain(currentDate);
 initializeLocalStorage();
-
 todayCircle();
 
 todoButton.addEventListener("click", addTodo);
 calendar.addEventListener("click", dateClick);
-todoList.addEventListener("click", xmarkClick);
+todoList.addEventListener("click", deleteBtnClick);
 
-/*x 클릭 시 로컬스토리지에서 지우는 함수 만들어야함 */
-//근데 로컬스토리지에서만 지운 다음에 다시 initialLocalStorage()하면 되는 거 아닐까
-function xmarkClick(e) {
-  if (e.target.matches("i.fa-solid.fa-xmark")) {
-    const li = e.target.parentNode;
-  
-    const todo = li.querySelector("span.todo").textContent.trim();
-    let [todoTime, todoText] = todo.split(" ")
-    console.log(todoText)
-    //해야할 것! 로컬스토리지에서 지우기
-
-    const key = getFormattedDate(currentDate);
+/* 삭제 버튼 클릭 시 todo 삭제하는 함수 */
+function deleteBtnClick(e) {
+  if (e.target.matches(".todo-delete-btn")) {
+    const todo = e.target.parentNode;
+    const todoTime = todo.querySelector(".todo-time").textContent;
+    const todoText = todo.querySelector(".todo-text").textContent;
+    const key = moment(currentDate).format("YYYY-MM-DD");
     let storedTodos = JSON.parse(localStorage.getItem("todos")) || {};
-    if (storedTodos[key]) { 
-console.dir(storedTodos[key])
-      storedTodos[key]= storedTodos[key].filter(todo=>todo.todoText !==todoText)
-console.dir(storedTodos[key])
-   
-      localStorage.setItem("todos", JSON.stringify(storedTodos))
-initializeLocalStorage()  } }
-
-
-    
+    if (storedTodos[key]) {
+      storedTodos[key] = storedTodos[key].filter(
+        (todo) => todo.todoText !== todoText || todo.todoTime !== todoTime
+      ); //이름이 같고 시간이 같으면 삭제됨
+    }
+    localStorage.setItem("todos", JSON.stringify(storedTodos)); //로컬스토리지에 저장
+    initializeLocalStorage();
+  }
 }
-
-//
+/*오늘 날짜를 원으로 표시하는 함수*/
 function todayCircle() {
   let id = currentDate.getDate();
   let todayElement = document.querySelector(`#date${id}`);
@@ -74,22 +62,23 @@ function todayCircle() {
     todayElement.classList.add("active");
   }
 }
+/*로컬스토리지 초기화 함수*/
 function initializeLocalStorage() {
   const storedTodos = JSON.parse(localStorage.getItem("todos")) || {};
-  const key = getFormattedDate(currentDate);
+  const key = moment(currentDate).format("YYYY-MM-DD");
   todoList.innerHTML = "";
-
-  console.log(storedTodos[key]);
   if (storedTodos[key]) {
     storedTodos[key].forEach((todo) => {
       addTodoToMain(todo);
     });
   }
 }
+/*날짜 클릭 시 동작하는 함수 */
 function dateClick(e) {
   if (e.target.className === "date" && e.target.textContent.trim() !== "") {
     const selectedDate = parseInt(e.target.textContent);
     if (selectedDate !== currentDate) {
+      //새로운 날짜를 클릭했을 때 현재 날짜를 선택한 날짜로 바꿔준다.
       currentDate.setDate(selectedDate);
       showMain(currentDate);
       initializeLocalStorage();
@@ -97,73 +86,73 @@ function dateClick(e) {
     showCircle(e);
   }
 }
-//내일하기 ! 날짜랑 제목을 다른 태그에 넣고 싶음
+/*메인에 할 일을 추가하는 함수 */
 function addTodoToMain(todo) {
-  let li = document.createElement("li"); 
-  let xmarkIcon = document.createElement("i"); 
-  let timeSpan = document.createElement("span"); 
-  let textSpan = document.createElement("span"); 
- timeSpan.textContent = todo.todoTime;
- textSpan.textContent = todo.todoText;
-  span.classList.add("todo");
-  xmarkIcon.classList.add("fa-solid", "fa-xmark");
-  li.append(span);
+  let li = document.createElement("li");
+  let xmarkIcon = document.createElement("i");
+  let timeSpan = document.createElement("span");
+  let textSpan = document.createElement("span");
+
+  timeSpan.textContent = todo.todoTime;
+  textSpan.textContent = todo.todoText;
+
+  li.classList.add("todo");
+  timeSpan.classList.add("todo-time");
+  textSpan.classList.add("todo-text");
+  xmarkIcon.classList.add("todo-delete-btn", "fa-solid", "fa-xmark");
+
+  li.append(timeSpan);
+  li.append(textSpan);
   li.append(xmarkIcon);
   todoList.append(li);
 }
-function getFormattedDate(date) {
-  //YYYY-MM-DD 되도록 만듬
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
+/*할 일을 추가하는 함수 */
 function addTodo() {
   const todoText = inputText.value.trim();
   const todoTime = inputTime.value;
-  console.log(todoTime)
+  //할 일이 비어있거나 시간이 선택되지 않으면 경고창을 띄움
   if (todoText === "" || todoTime === "") {
-    if (todoText === "") alert("할 일을 적어주세요");
-    if (todoTime === "") alert("시간을 알려주세요")
-    
-  }else {
-   
-    const key = getFormattedDate(currentDate);
-    const storedTodos = JSON.parse(localStorage.getItem("todos")) || {}; //todos라는 key를 읽기
+    if (todoText === "") alert("Please write down the task.");
+    if (todoTime === "") alert("Please select a time!");
+  } else {
+    //로컬스토리지에 "todos"가 없으면 빈 객체로 초기화
+    const storedTodos = JSON.parse(localStorage.getItem("todos")) || {};
+    const key = moment(currentDate).format("YYYY-MM-DD");
+    //해당 날짜의 할 일 목록이 없으면 빈 배열로 초기화
     if (!storedTodos[key]) {
       storedTodos[key] = [];
     }
-    console.log(todoTime);
-    console.log(storedTodos);
+    //해당 날짜에 할 일 목록을 추가 {시간: 할일}
     storedTodos[key].push({ todoTime: todoTime, todoText: todoText });
-    localStorage.setItem("todos", JSON.stringify(storedTodos));
+    localStorage.setItem("todos", JSON.stringify(storedTodos)); //로컬스토리지에 저장
     initializeLocalStorage();
   }
   inputText.value = "";
 }
+/* 캘린더를 렌더링하는 함수 */
 function renderCalendar() {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   document.querySelector(".year-month").textContent =
     monthList[month] + " " + year;
-
   const prevLast = new Date(year, month, 0);
   const thisLast = new Date(year, month + 1, 0);
-  const prevLast_Date = prevLast.getDate();
   const prevLast_Day = prevLast.getDay();
   const thisLast_Date = thisLast.getDate();
   const thisLast_Day = thisLast.getDay();
-
   let dates = [];
   if (prevLast_Day !== 6) {
+    //이전 달의 마지막 요일이 토요일이 아니면 빈 날짜를 dates에 추가한다.
     for (let i = 0; i < prevLast_Day + 1; i++) {
       dates.push(" ");
     }
   }
   for (let i = 1; i < thisLast_Date + 1; i++) {
+    //현재 달의 날짜를 dates에 추가
     dates.push(i);
   }
   for (let i = 1; i < 7 - thisLast_Day; i++) {
+    //현재 달의 마지막 요일이 토요일이 아니면 빈 날짜를 dates에 추가한다.
     dates.push(" ");
   }
   dates.forEach((date, index) => {
@@ -172,33 +161,31 @@ function renderCalendar() {
   calendar.setAttribute("id", year + "" + month);
   calendar.innerHTML = dates.join("");
 }
+/*메인 화면을 표시하는 함수 */
 function showMain(date) {
   const todayDay = date.getDay();
   const todayDate = date.getDate();
   document.querySelector(".main-date").style.color = "black";
-
   document.querySelector(".main-day").textContent = dayList[todayDay];
   document.querySelector(".main-date").textContent = todayDate;
 }
+/*선택된 날짜를 원으로 표시하는 함수*/
 function showCircle(e) {
   if (e.target.className === "date") {
     let dates = document.querySelectorAll(".date");
-
     dates.forEach((i) => {
       i.classList.remove("active");
     });
     e.target.classList.add("active");
   }
-  const selectedDate = parseInt(e.target.textContent); // 선택된 날짜
-  currentDate.setDate(selectedDate);
-  showMain(currentDate);
-  initializeLocalStorage();
 }
+/*이전 달로 이동하는 함수 */
 function prevMonth() {
   currentDate.setDate(1);
   currentDate.setMonth(currentDate.getMonth() - 1);
   renderCalendar();
 }
+/*다음 달로 이동하는 함수 */
 function nextMonth() {
   currentDate.setDate(1);
   currentDate.setMonth(currentDate.getMonth() + 1);

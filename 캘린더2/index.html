@@ -1,54 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <script defer src="app.js"> </script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Document</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-   
-</head>
-<body>
-    <div class="main">
-        <div class="content-wrap">
-            <div class="content-left">
-                <div class="main-wrap">
-                    <span class="main-day">monday</span>
-                    <span class="main-date">24</span>
-                </div>
-                <div class="todo-wrap">
-                    <span class="todo-title">to do list</span>
-                    <div class="input-wrap">
-                        <input class="input-time"  type="time"  >
-                        <input class="input-text" type="text" placeholder="여기에 적어즈세요!">
-                        <button>+</button>
-                        <ul class="todo-list"></ul>
-                    </div>
-                </div>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+  
+      <div class="content-wrap">
+        <div class="content-left">
+          <div class="main-wrap">
+            <span class="main-day">monday</span>
+            <span class="main-date">24</span>
+          </div>
+          <div class="todo-wrap">
+            <span class="todo-title">to do list</span>
+            <div class="input-wrap">
+              <input class="input-time" type="time" />
+              <input
+                class="input-text"
+                type="text"
+                placeholder="Please write here!"
+              />
+              <button>+</button>
+              <ul class="todo-list"></ul>
             </div>
-            <div class="content-right">
-                <div class="nav">
-                    <button class="nav-btn go-prev" onclick="prevMonth()">&lt;</button>
-                  <span class="year-month">July</span>
-                    <button class="nav-btn go-next" onclick="nextMonth()">&gt;</button>
-                  </div>         
-          <ul class="days">
-                        <li class="day">S</li>
-                        <li class="day">M</li>
-                        <li class="day">T</li>
-                        <li class="day">W</li>
-                        <li class="day">T</li>
-                        <li class="day">F</li>
-                        <li class="day">S</li>
-                    </ul>
-                <div class="calendar">
-                    
-                </div>
-                
-            </div>
+          </div>
         </div>
-    </div>
-</body>
+        <div class="content-right">
+          <div class="nav">
+            <button class="nav-btn go-prev" onclick="prevMonth()">&lt;</button>
+            <span class="year-month">July</span>
+            <button class="nav-btn go-next" onclick="nextMonth()">&gt;</button>
+          </div>
+          <ul class="days">
+            <li class="day">S</li>
+            <li class="day">M</li>
+            <li class="day">T</li>
+            <li class="day">W</li>
+            <li class="day">T</li>
+            <li class="day">F</li>
+            <li class="day">S</li>
+          </ul>
+          <div class="calendar"></div>
+        </div>
+      </div>
+ 
+  </body>
 </html>

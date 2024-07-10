@@ -1,3 +1,4 @@
+/*common*/
 * {
   padding: 0;
   margin: 0;
@@ -9,13 +10,16 @@ ul {
 button{
   border: none;
 }
-
-
-
-.main {
-  display: block;
-  width: 100%;
-
+input{
+  height: 30px;
+  padding-top: 30px;
+   outline: none;
+   border: none;
+  background-color: #d7d7d7;
+  border-bottom: 1px solid #ababab;
+ 
+  font-size: 12px;
+  padding-left:10px ;
 }
 .content-wrap {
   width: 700px;
@@ -25,20 +29,19 @@ button{
   overflow: hidden;
   display: flex;
 }
+/*-------------------content left-------------*/
 .content-left {
   background: #d7d7d7;
-
   float: left;
   width: 65%;
-
   padding-top: 60px;
 }
+/*main-wrap*/
 .main-wrap {
   display: flex;
   flex-direction: column;
   text-align: center;
 }
-
 .main-day {
   font-size: 30px;
 }
@@ -46,6 +49,7 @@ button{
   font-size: 110px;
   font-weight: bold;
 }
+/*todo-wrap*/
 .todo-wrap {
   padding-top: 30px;
   width: 100%;
@@ -53,62 +57,58 @@ button{
 }
 .todo-title {
   font-weight: bold;
-
 }
-
-.input-wrap input {
-  padding-top: 30px;
-  border: none;
-  background-color: #d7d7d7;
-  border-bottom: 1px solid #ababab;
-  outline: none;
-  font-size: 12px;
-  padding-left:10px ;
-}
+/*input*/
 .input-wrap button {
   width: 30px;
   height: 20px;
- 
   color: #4f96ec;
   border-radius: 20px;
   font-size: 20px;
 }
-
 .input-wrap ul {
   padding-top: 20px;
   height: 200px;
   font-weight: bold;
 }
+/*todo*/
 .todo-list{
-  position: relative;
+
   text-align: left;
   padding-left: 20px;
   line-height: 25px;
   color: black;
+  font-size: 14px;
+  
 }
-
-
-.todo-list li .fa-xmark{
+.todo{
+font-weight: 400;
+width: 90%;
+position: relative;
+}
+.todo .todo-time{
+ position: relative;
+ left: 50px;
+}
+.todo .todo-text{
+ position: absolute;
+left: 130px;
+width:150px;
+}
+.todo .todo-delete-btn{
   position: absolute;
-  right: 50px;
+right: 30px;
   color: #d76a6a;
   font-size: 20px;
 }
-.todo-list li .fa-check{
-  position: absolute;
-  right: 20px;
-  color: #2b9c4f;
-  font-size: 20px;
-
-
-}
+/*-----------------content-right--------------*/
 .content-right {
-  width: 35%;
+  width: 40%;
   font-weight: bold;
-  padding: 30px;
+  padding: 10px;
 }
+/*nav*/
 .nav {
-  
   width: 100%;
   display: flex;
   justify-content: space-around;
@@ -121,15 +121,14 @@ font-size: 20px;
 .nav-btn{
 background-color: #ababab;
 font-size: 30px;
-
 }
+/*calendar*/
 .calendar {
   width: 100%;
   text-align: center;
   display: flex;
   flex-wrap: wrap;
 }
-
 .days {
   width: 100%;
   display: flex;
@@ -141,12 +140,10 @@ font-size: 30px;
   height: 50px;
 }
 .date {
-  line-height: 30px;
+  line-height: 40px;
   width: calc(100% / 7);
-  height: 30px;
+  height: 40px;
 }
-
-
 .day:nth-child(7n + 1),
 .date:nth-child(7n + 1) {
   color: rgb(194, 83, 83);
@@ -160,5 +157,4 @@ font-size: 30px;
   background-color: #4f96ec;
   border-radius: 50%;
   font-size: 18px;
-
 }
