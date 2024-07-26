@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>게시물 수정 폼</title>
+</head>
+<body>
+<div class="layout">
+    <form th:action="@{/board/update/{id}(id=${board.id})}" method="post">
+        <input th:value=${board.title} name="title" type="text">
+        <textarea th:text=${board.content} name="content"></textarea>
+        <button type="submit">수정</button>
+    </form>
+
+</div>
+</body>
+</html>

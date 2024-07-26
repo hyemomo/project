@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>메시지</title>
+</head>
+
+<body>
+<script th:inline="javascript">
+    var message = /*[[${message}]]*/ 'Default message if no message is provided';
+    alert(message);
+    location.replace(/*[[${url}]]*/ 'defaultURL');
+</script>
+</body>
+</html>

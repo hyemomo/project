@@ -1,0 +1,185 @@
+/*common*/
+* {
+  padding: 0;
+  margin: 0;
+}
+ul {
+  list-style: none;
+  padding: 0px;
+}
+button{
+  border: none;cursor: pointer;
+}
+input{
+  height: 30px;
+  padding-top: 30px;
+   outline: none;
+   border: none;
+  background-color: #d7d7d7;
+  border-bottom: 1px solid #ababab;
+
+  font-size: 12px;
+  padding-left:10px ;
+}
+.content-wrap {
+  width: 700px;
+  margin: 0 auto;
+  background-color: #ababab;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+}
+/*-------------------content left-------------*/
+.content-left {
+  background: #d7d7d7;
+  float: left;
+  width: 65%;
+  padding-top: 60px;
+}
+/*main-wrap*/
+.main-wrap {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+.main-day {
+  font-size: 30px;
+}
+.main-date {
+  font-size: 110px;
+  font-weight: bold;
+}
+/*todo-wrap*/
+.todo-wrap {
+  padding-top: 30px;
+  width: 100%;
+  text-align: center;
+}
+.todo-title {
+  font-weight: bold;
+}
+/*input*/
+.input-wrap button {
+  width: 20px;
+  height: 30px;
+  color: #4f96ec;
+  border-radius: 20px;
+  font-size: 25px;
+
+}
+.input-wrap ul {
+  padding-top: 20px;
+  height: 200px;
+  font-weight: bold;
+}
+/*todo*/
+.todo-list{
+
+  text-align: left;
+  padding-left: 20px;
+  line-height: 25px;
+  color: black;
+  font-size: 14px;
+
+}
+.todo{
+font-weight: 400;
+width: 90%;
+position: relative;
+}
+.todo .todo-time{
+ position: relative;
+ left: 50px;
+}
+.todo .todo-text{
+ position: absolute;
+left: 130px;
+width:150px;
+}
+.todo .todo-delete-btn{
+  position: absolute;
+right: 30px;
+  color: #d76a6a;
+  font-size: 20px;
+}
+/*-----------------content-right--------------*/
+.content-right {
+  width: 40%;
+  font-weight: bold;
+  padding: 10px;
+}
+/*nav*/
+.nav {
+  width: 100%;
+
+  padding-top: 30px;
+  padding-bottom: 50px;
+  position: relative;
+
+
+}
+.year-month{
+  position: absolute;
+
+font-size: 20px;
+left: 35px;
+}
+.nav-btn{
+background-color: #ababab;
+font-size: 30px;
+}
+.go-prev{
+  position: absolute;
+  left: 10px;
+
+}
+.go-next{
+  position: absolute;
+left:140px
+}
+.go-today{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  position: absolute;
+  right: 20px;
+
+
+
+}
+/*calendar*/
+.calendar {
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+}
+.days {
+  width: 100%;
+  display: flex;
+  text-align: center;
+}
+.day {
+  line-height: 50px;
+  width: calc(100% / 7);
+  height: 50px;
+}
+.date {
+  line-height: 40px;
+  width: calc(100% / 7);
+  height: 40px;
+}
+.day:nth-child(7n + 1),
+.date:nth-child(7n + 1) {
+  color: rgb(194, 83, 83);
+}
+.day:nth-child(7n),
+.date:nth-child(7n) {
+  color: rgb(53, 101, 189);
+}
+.date.active{
+    color: #ffffff;
+  background-color: #4f96ec;
+  border-radius: 50%;
+  font-size: 18px;
+}
