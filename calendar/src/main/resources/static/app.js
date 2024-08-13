@@ -91,13 +91,12 @@ function addTodoToMain(todos) {
 function deleteBtnClick(e) {
   if (e.target.matches(".todo-delete-btn")) {
     const todo = e.target.parentNode;
-    const id = todo.id
+    const id = parseInt(todo.id)
     const todoTime = todo.querySelector(".todo-time").textContent;
     const todoText = todo.querySelector(".todo-text").textContent;
     const key = moment(currentDate).format("YYYY-MM-DD");
 
-
-  fetch("/calendar/tasks", {
+  fetch("/calendar/delete", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -106,7 +105,7 @@ function deleteBtnClick(e) {
       id:id
     }),
   })
-    .then((res) => res.json())
+    .then((res) => res.text())
     .then(() => {
       fetchTodos();
     })

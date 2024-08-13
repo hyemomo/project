@@ -12,5 +12,5 @@ import java.util.List;
 public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByUser(User user);
     List<Task> findByDeadlineDate(LocalDate deadlineDate);
-   void deleteById(Integer id);
+   void deleteById(Long id);
 }

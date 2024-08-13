@@ -1,23 +1,15 @@
 package com.study.calendar.controller;
 
-
 import com.study.calendar.Entity.Task;
 import com.study.calendar.Entity.User;
 import com.study.calendar.dto.TaskUpdateRequest;
 import com.study.calendar.service.TaskService;
 import com.study.calendar.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,28 +20,30 @@ public class CalendarController {
     @Autowired
     private TaskService taskService;
 
+    //"calendr.html" 뷰 보여주기
     @GetMapping("/calendar")
-    public String showmain(Model model) {
-        model.addAttribute("list", taskService.taskList());
+    public String showmain() {
         return "calendar";
     }
-
+  //데이터 베이스에서 해당 id의 task 삭제하기
     @PostMapping("/calendar/delete")
     @ResponseBody
-    public String deleteTask(@RequestBody Integer id) {
-        taskService.taskDelete(id);
-        return "삭제 완료!";
-    }
+    public String deleteTask(@RequestBody Map<String, Long> request) {
 
+        Long id= request.get("id");
+        taskService.taskDelete(id);
+        return "삭제 완료!" ;
+    }
+    //캘린더 처음 시작할때와 날짜 바뀔 때마다 데이터 베이스에서 tasklist 새로 받아오기
+    //body로 날짜 받아오고 그 날짜의 데이터를 보냄
     @PostMapping("/calendar/update")
     @ResponseBody
     public ResponseEntity<List<Task>> updateTask(@RequestBody TaskUpdateRequest request, Model model) {
         List<Task> tasks = taskService.getTasksByDeadLineDate(request.getDeadlineDate());
-        System.out.println(tasks);
         return ResponseEntity.ok(tasks);
     }
 
-    //메인 왼쪽에 task 리스트 보여주기
+    //새로운 task 등록하기
     @PostMapping("/calendar/tasks")
     @ResponseBody
     public ResponseEntity<List<Task>> addTask(@RequestBody Task task) {
