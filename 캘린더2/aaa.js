@@ -5,36 +5,20 @@ const todoButton = document.querySelector("button");
 const todoList = document.querySelector("ul");
 const todayButton = document.querySelector(".go-today");
 let currentDate = moment();
-
-renderCalendar();
+console.log(currentDate);
+renderCalendar(currentDate);
 showMain(currentDate);
 todayCircle();
 goToday();
-fetchTodos();
-
 calendar.addEventListener("click", dateClick);
 todoList.addEventListener("click", deleteBtnClick);
 todayButton.addEventListener("click", goToday);
 todoButton.addEventListener("click", addTodo);
 
-function fetchTodos() {
-  return fetch("/calendar/update", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      deadlineDate: moment(currentDate).format("YYYY-MM-DD"),
-    }),
-  })
-    .then((response) => response.json())
-    .then((todos) => {
-      addTodoToMain(todos);
-    });
-}
-
-function addTodo(e) {
-  e.preventDefault();
+function addTodo() {
   const todoText = inputText.value.trim();
   const todoTime = inputTime.value;
+  console.log(todoText, todoTime);
 
   // 할 일이 비어있거나 시간이 선택되지 않으면 경고창을 띄움
   if (todoText === "" || todoTime === "") {
@@ -45,73 +29,55 @@ function addTodo(e) {
     if (todoTime === "") alert("Please select a time!");
     return;
   }
-
   fetch("/calendar/tasks", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      deadlineDate: currentDate,
-      title: todoText,
-      deadlineTime: todoTime,
-    }),
-  })
-    .then((res) => res.json())
-    .then((todos) => {
-      addTodoToMain(todos);
-    })
-    .catch((err) => console.error("Error", err));
-
-    inputText.value=""
-    inputTime.value=""
+    body: JSON.stringify({ title: todoText, deadlineTime: todoTime }),
+  }).then(res=>res.json()).then(todos=>{console.log(todos); }).catch(err=> console.err("Error", err));
 }
+
+
 function addTodoToMain(todos) {
-  todoList.innerText = "";
-  todos.forEach((todo) => {
-    let li = document.createElement("li");
-    let xmarkIcon = document.createElement("i");
-    let timeSpan = document.createElement("span");
-    let textSpan = document.createElement("span");
-    timeSpan.textContent = todo.deadlineTime;
-    textSpan.textContent = todo.title;
-    li.setAttribute("id", todo.id);
-    li.classList.add("todo");
-    timeSpan.classList.add("todo-time");
-    textSpan.classList.add("todo-text");
-    xmarkIcon.classList.add("todo-delete-btn", "fa-solid", "fa-xmark");
+  todos.forEach((todo)=>{
+let li = document.createElement("li");
+  let xmarkIcon = document.createElement("i");
+  let timeSpan = document.createElement("span");
+  let textSpan = document.createElement("span");
+  timeSpan.textContent = todo.deadlineTime;
+  textSpan.textContent = todo.title;
 
-    li.append(timeSpan);
-    li.append(textSpan);
-    li.append(xmarkIcon);
-    todoList.append(li);
-  });
+  li.classList.add("todo");
+  timeSpan.classList.add("todo-time");
+  textSpan.classList.add("todo-text");
+  xmarkIcon.classList.add("todo-delete-btn", "fa-solid", "fa-xmark");
+
+  li.append(timeSpan);
+  li.append(textSpan);
+  li.append(xmarkIcon);
+  todoList.append(li);
+  })
+  
+
+  
 }
+
 /* 삭제 버튼 클릭 시 todo 삭제하는 함수 */
 function deleteBtnClick(e) {
   if (e.target.matches(".todo-delete-btn")) {
     const todo = e.target.parentNode;
-    const id = todo.id
     const todoTime = todo.querySelector(".todo-time").textContent;
     const todoText = todo.querySelector(".todo-text").textContent;
     const key = moment(currentDate).format("YYYY-MM-DD");
-
-
-  fetch("/calendar/tasks", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      id:id
-    }),
-  })
-    .then((res) => res.json())
-    .then(() => {
-      fetchTodos();
-    })
-    .catch((err) => console.error("Error", err));
-
+    let storedTodos = JSON.parse(localStorage.getItem("todos")) || {};
+    if (storedTodos[key]) {
+      storedTodos[key] = storedTodos[key].filter(
+        (todo) => todo.todoText !== todoText || todo.todoTime !== todoTime
+      ); // 이름이 같고 시간이 같으면 삭제됨
+    }
+    localStorage.setItem("todos", JSON.stringify(storedTodos)); // 로컬스토리지에 저장
+    initializeLocalStorage();
   }
 }
 
@@ -131,7 +97,6 @@ function dateClick(e) {
     if (selectedDate !== currentDate.date()) {
       // 새로운 날짜를 클릭했을 때 현재 날짜를 선택한 날짜로 바꿔준다.
       currentDate.date(selectedDate);
-      fetchTodos();
       showMain(currentDate);
     }
     showCircle(e);
@@ -166,9 +131,8 @@ function renderCalendar() {
     dates.push(" ");
   }
   dates.forEach((date, index) => {
-    let result = index - parseInt(prevLast_Day);
     dates[index] =
-      "<div class='date' id='date" + result + "'>" + date + "</div>";
+      "<div class='date' id='date" + index + "'>" + date + "</div>";
   });
   calendar.setAttribute("id", year + "" + month);
   calendar.innerHTML = dates.join("");
@@ -196,14 +160,12 @@ function showCircle(e) {
 function prevMonth() {
   currentDate.date(1).subtract(1, "months");
   renderCalendar();
-  fetchTodos();
 }
 
 /* 다음 달로 이동하는 함수 */
 function nextMonth() {
   currentDate.date(1).add(1, "months");
   renderCalendar();
-  fetchTodos();
 }
 
 /* 오늘로 이동하는 함수 */
@@ -212,5 +174,4 @@ function goToday() {
   renderCalendar();
   showMain(currentDate);
   todayCircle();
-  fetchTodos();
 }

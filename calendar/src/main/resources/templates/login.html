@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인</title>
+</head>
+<body>
+<h1>Login</h1>
+<form action="/calendar/login/submit" method="post">
+    <label for="email">Email
+        <input type="email" id="email" name="email" >
+
+    </label>
+    <label for="password">Password
+        <input type="password" id="password" name="password" >
+
+    </label>
+    <button type="submit">로그인</button>
+</form>
+<button type="button" onclick="location.href='/calendar/signup'">회원가입</button>
+</body>
+</html>

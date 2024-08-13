@@ -11,5 +11,9 @@
         <module name="calendar.calendar.main" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="calendar.calendar.main~1" target="22" />
+      <module name="calendar.calendar.test~1" target="22" />
+    </bytecodeTargetLevel>
   </component>
 </project>

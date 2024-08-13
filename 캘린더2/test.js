@@ -18,6 +18,7 @@ todayButton.addEventListener("click", goToday);
 todoButton.addEventListener("click", addTodo);
 
 function fetchTodos() {
+  console.log(moment(currentDate).format("YYYY-MM-DD"));
   return fetch("/calendar/update", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -27,6 +28,7 @@ function fetchTodos() {
   })
     .then((response) => response.json())
     .then((todos) => {
+      console.log(todos);
       addTodoToMain(todos);
     });
 }
@@ -59,12 +61,10 @@ function addTodo(e) {
   })
     .then((res) => res.json())
     .then((todos) => {
+      console.log(todos);
       addTodoToMain(todos);
     })
     .catch((err) => console.error("Error", err));
-
-    inputText.value=""
-    inputTime.value=""
 }
 function addTodoToMain(todos) {
   todoList.innerText = "";
@@ -96,7 +96,7 @@ function deleteBtnClick(e) {
     const todoText = todo.querySelector(".todo-text").textContent;
     const key = moment(currentDate).format("YYYY-MM-DD");
 
-
+    
   fetch("/calendar/tasks", {
     method: "POST",
     headers: {
@@ -107,11 +107,18 @@ function deleteBtnClick(e) {
     }),
   })
     .then((res) => res.json())
-    .then(() => {
-      fetchTodos();
+    .then((todos) => {
+      addTodoToMain(todos);
     })
     .catch((err) => console.error("Error", err));
-
+    let storedTodos = JSON.parse(localStorage.getItem("todos")) || {};
+    if (storedTodos[key]) {
+      storedTodos[key] = storedTodos[key].filter(
+        (todo) => todo.todoText !== todoText || todo.todoTime !== todoTime
+      ); // 이름이 같고 시간이 같으면 삭제됨
+    }
+    localStorage.setItem("todos", JSON.stringify(storedTodos)); // 로컬스토리지에 저장
+    initializeLocalStorage();
   }
 }
 
@@ -165,6 +172,7 @@ function renderCalendar() {
     // 현재 달의 마지막 요일이 토요일이 아니면 빈 날짜를 dates에 추가한다.
     dates.push(" ");
   }
+  console.log(typeof prevLast_Day);
   dates.forEach((date, index) => {
     let result = index - parseInt(prevLast_Day);
     dates[index] =

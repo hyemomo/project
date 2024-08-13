@@ -101,6 +101,7 @@ width:150px;
 right: 30px;
   color: #d76a6a;
   font-size: 20px;
+  cursor:pointer;
 }
 /*-----------------content-right--------------*/
 .content-right {
@@ -168,6 +169,7 @@ left:140px
   line-height: 40px;
   width: calc(100% / 7);
   height: 40px;
+  cursor:pointer;
 }
 .day:nth-child(7n + 1),
 .date:nth-child(7n + 1) {
